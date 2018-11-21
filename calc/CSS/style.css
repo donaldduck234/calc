@@ -30,10 +30,15 @@ h1 {
 
 .operator:hover {
     background-color: #e59400;
+    cursor: pointer;
 }
 
 .equal {
     background-color: orange;
+}
+
+.equal:hover {
+    cursor: pointer;
 }
 
 .helper {

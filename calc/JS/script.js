@@ -7,116 +7,78 @@ const cancel = document.getElementById('cancel');
 const calcInteraction = document.getElementById('calc-body');
 let numberEntered = inputDisplay.innerHTML;
 let ongoingCalc = inputDisplay.innerHTML;
+//BOOLEANS
 let result;
 let resetAfterEqual;
 let operatorSelected;
-let decimal;
+let decimal = false;
 let btnNumberClicked;
 
 
-
-
-
-//function backToOrange() {
-//    for (var i = 0; i <= operators.length; i += 1) {
-//        operators[i].style.backgroundColor = "orange";
-//    }
-//}
-
 //CALC INTERATCION EVENT LISTENER AND HANDLER
 calcInteraction.addEventListener('click', (e) => {
-
+    //NUMBERS
     if (e.target.className == 'btn number') {
-        if (inputDisplay.innerHTML == 0 || resetAfterEqual === true) {
-            inputDisplay.innerHTML = e.target.innerHTML;
+        if (!decimal) {
+            if (inputDisplay.innerHTML == 0 || resetAfterEqual === true) {
+                inputDisplay.innerHTML = e.target.innerHTML;
+                resetAfterEqual = false;
+            }
         } else if (inputDisplay.innerHTML != 0) {
             inputDisplay.innerHTML += e.target.innerHTML;
+            resetAfterEqual = false;
+        } else if (decimal) {
+            if (inputDisplay.innerHTML == 0 || resetAfterEqual === true) {
+                inputDisplay.innerHTML += e.target.innerHTML;
+                resetAfterEqual = false;
+            }
+        } else if (inputDisplay.innerHTML != 0) {
+            inputDisplay.innerHTML += e.target.innerHTML;
+            resetAfterEqual = false;
         }
-        resetAfterEqual = false;
-        btnNumberClicked = true;
-        //        else if (resetAfterEqual == true) {
-        //            inputDisplay.innerHTML = 0
-        //        }
     }
-//        if (inputDisplay.innerHTML != 0) {
-//            inputDisplay.innerHTML += e.target.innerHTML;
-//        }
-//        if (resetAfterEqual === true) {
-//            inputDisplay.innerHTML = 0
-//        } 
-    //    else if (e.target.className == 'btn number' && resetAfterEqual) {
-    //        inputDisplay.innerHTML = '';
-    //        inputDisplay.innerHTML = e.target.innerHTML;
-    //        resetAfterEqual = false;
-    //        btnNumberClicked = true;
-    //    } 
-    //    else if (e.target.className == 'btn number' && resetAfterEqual === false) {
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        btnNumberClicked = true;
-    //    } else if (e.target.className == 'btn number') {
-    //        inputDisplay.innerHTML = '';
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //    }
-    //DECIMAL BUTTON
-    //    if (e.target.className == 'btn number decimal' && resetAfterEqual) {
-    //        inputDisplay.innerHTML = 0;
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        resetAfterEqual = false;
-    //        decimal = true;
-    //        operatorSelected = false;
-    //    } else if (e.target.className == 'btn number decimal' && operatorSelected && inputDisplay.innerHTML == 0) {
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        operatorSelected = false;
-    //        decimal = true;
-    //    } else if (e.target.className == 'btn number decimal') {
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        decimal = true;
-    //    } else if (e.target.className == 'btn number decimal' && decimal) {
-    //        inputDisplay.innerHTML += '';
-    //        decimal = true;
-    //    } 
-    
-     //    if (e.target.className == 'btn number decimal' && resetAfterEqual) {
-    //        inputDisplay.innerHTML = 0;
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        resetAfterEqual = false;
-    //        decimal = true;
-    //        operatorSelected = false;
-    //    } else if (e.target.className == 'btn number decimal' && operatorSelected && inputDisplay.innerHTML == 0) {
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        operatorSelected = false;
-    //        decimal = true;
-    //    } else if (e.target.className == 'btn number decimal') {
-    //        inputDisplay.innerHTML += e.target.innerHTML;
-    //        decimal = true;
-    //    } else if (e.target.className == 'btn number decimal' && decimal) {
-    //        inputDisplay.innerHTML += '';
-    //        decimal = true;
-    //    } 
-    
-    
-    //OPERATOR
+
+    //DECIMALS
+    if (e.target.className == 'btn number decimal') {
+        if (decimal) {
+            inputDisplay.innerHTML += '';
+        } else {
+            inputDisplay.innerHTML += e.target.innerHTML;
+            decimal = true;
+            resetAfterEqual = false;
+            operatorSelected = false;
+        }
+    }
+
+    //OPERATORS
     if (e.target.className == 'btn operator ophover') {
         //        e.target.style.backgroundColor = '#e59400';
         ongoingCalc += inputDisplay.innerHTML + e.target.innerHTML;
-        inputDisplay.innerHTML= '';
+        inputDisplay.innerHTML = 0;
         operatorSelected = true;
-    } else if (e.target.className == 'btn helper ac') {
+        decimal = false;
+    }
+
+    //HELPERS
+    else if (e.target.className == 'btn helper ac') {
         inputDisplay.innerHTML = 0;
         ongoingCalc = '';
-    } else if (e.target.className == 'btn equal') {
+        decimal = false;
+    }
+
+    //EQUAL
+    else if (e.target.className == 'btn equal') {
         ongoingCalc += inputDisplay.innerHTML;
         inputDisplay.innerHTML = eval(ongoingCalc);
         ongoingCalc = '';
         resetAfterEqual = true;
         decimal = false;
+        operatorSelected = false;
     }
 });
 
-
-console.log(ongoingCalc);
-
-//non accetta decimali ancora
+//APPUNTI
+//Calcoli in decimali sbacliati avvolte di 0.01 (controllare)
 //attivare il backspace
 //limitare il numero massimo di caratteri nel display
 //impedire il riempimento del display a destra
